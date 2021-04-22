@@ -22,7 +22,12 @@ class MyApp extends StatelessWidget {
           title: 'Chat App',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primarySwatch: Colors.pink,
+            accentColor: Colors.deepPurple,
+            accentColorBrightness: Brightness.dark,
+            buttonTheme: ButtonTheme.of(context).copyWith(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20))),
           ),
           home: snapshot.connectionState != ConnectionState.done
               ? SplashScreen()
