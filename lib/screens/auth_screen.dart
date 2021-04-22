@@ -10,22 +10,23 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: AuthWidget(),
+      body: AuthForm(),
     );
   }
 }
 
 //Stateful Widget seperated to contain authentication Form
-class AuthWidget extends StatefulWidget {
-  const AuthWidget({
+
+class AuthForm extends StatefulWidget {
+  const AuthForm({
     Key? key,
   }) : super(key: key);
 
   @override
-  _AuthWidgetState createState() => _AuthWidgetState();
+  _AuthFormState createState() => _AuthFormState();
 }
 
-class _AuthWidgetState extends State<AuthWidget> {
+class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
   var _isLogin = true;
   var _userEmail = '';
