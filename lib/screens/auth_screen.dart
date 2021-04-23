@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -15,6 +17,7 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 }
 
+//--------
 //Stateful Widget seperated to contain authentication Form
 
 class AuthForm extends StatefulWidget {
@@ -27,18 +30,41 @@ class AuthForm extends StatefulWidget {
 }
 
 class _AuthFormState extends State<AuthForm> {
+  final _auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   var _isLogin = true;
   var _userEmail = '';
   var _userName = '';
   var _userPassword = '';
 
-  void _trySubmit() {
+  void _trySubmit() async {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
     if (isValid) {
       _formKey.currentState!.save();
-      //TODO: login to app
+      UserCredential userCredential;
+      try {
+        if (_isLogin) {
+          userCredential = await _auth.signInWithEmailAndPassword(
+            email: _userEmail.trim(),
+            password: _userPassword.trim(),
+          );
+        } else {
+          userCredential = await _auth.createUserWithEmailAndPassword(
+            email: _userEmail.trim(),
+            password: _userPassword.trim(),
+          );
+        }
+      } on PlatformException catch (err) {
+        final message = err.message ??
+            'An error has occured. Please check your credentials';
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(message),
+          backgroundColor: Theme.of(context).errorColor,
+        ));
+      } catch (err) {
+        print(err);
+      }
     }
   }
 
