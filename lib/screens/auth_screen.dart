@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -33,11 +34,15 @@ class _AuthFormState extends State<AuthForm> {
   final _auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   var _isLogin = true;
+  var _isLoading = false;
   var _userEmail = '';
   var _userName = '';
   var _userPassword = '';
 
-  void _trySubmit() async {
+  Future<void> _trySubmit() async {
+    setState(() {
+      _isLoading = true;
+    });
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
     if (isValid) {
@@ -54,6 +59,13 @@ class _AuthFormState extends State<AuthForm> {
             email: _userEmail.trim(),
             password: _userPassword.trim(),
           );
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userCredential.user?.uid)
+              .set({
+            'username': _userName.trim(),
+            'email': _userEmail.trim(),
+          });
         }
       } on PlatformException catch (err) {
         final message = err.message ??
@@ -62,8 +74,18 @@ class _AuthFormState extends State<AuthForm> {
           content: Text(message),
           backgroundColor: Theme.of(context).errorColor,
         ));
+        setState(() {
+          _isLoading = false;
+        });
       } catch (err) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(err.toString()),
+          backgroundColor: Theme.of(context).errorColor,
+        ));
         print(err);
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }
@@ -138,7 +160,9 @@ class _AuthFormState extends State<AuthForm> {
                   ),
                   //Login button
                   ElevatedButton(
-                    child: Text(_isLogin ? 'Login' : 'Create Account'),
+                    child: _isLoading
+                        ? CircularProgressIndicator.adaptive()
+                        : Text(_isLogin ? 'Login' : 'Create Account'),
                     onPressed: _trySubmit,
                   ),
                   //New account button
