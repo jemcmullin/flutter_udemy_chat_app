@@ -23,13 +23,15 @@ class MyApp extends StatelessWidget {
           title: 'Chat App',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            primarySwatch: Colors.pink,
-            accentColor: Colors.deepPurple,
-            accentColorBrightness: Brightness.dark,
-            buttonTheme: ButtonTheme.of(context).copyWith(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20))),
-          ),
+              primarySwatch: Colors.pink,
+              accentColor: Colors.deepPurple,
+              accentColorBrightness: Brightness.dark,
+              buttonTheme: ButtonTheme.of(context).copyWith(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20))),
+              iconTheme: IconTheme.of(context).copyWith(
+                color: Colors.white,
+              )),
           home: snapshot.connectionState != ConnectionState.done
               ? SplashScreen()
               : StreamBuilder(
