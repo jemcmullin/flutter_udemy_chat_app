@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_udemy_chat_app/widgets/chat/message_bubble.dart';
 
 class Messages extends StatelessWidget {
   @override
@@ -19,8 +20,8 @@ class Messages extends StatelessWidget {
           reverse: true,
           itemCount: chatDocs?.length ?? 0,
           itemBuilder: (context, index) => Container(
-            padding: EdgeInsets.all(8),
-            child: Text(chatDocs?[index]['text']),
+            // padding: NOW CONTROLLED BY MESSAGE BUBBLE
+            child: MessageBubble(message: chatDocs?[index]['text']),
           ),
         );
       },
