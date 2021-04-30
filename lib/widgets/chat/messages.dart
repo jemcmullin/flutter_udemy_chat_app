@@ -13,6 +13,7 @@ class Messages extends StatelessWidget {
 
         final chatDocs = snapshot.data?.docs;
         return ListView.builder(
+          reverse: true,
           itemCount: chatDocs?.length ?? 0,
           itemBuilder: (context, index) => Container(
             padding: EdgeInsets.all(8),
