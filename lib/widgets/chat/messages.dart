@@ -23,6 +23,7 @@ class Messages extends StatelessWidget {
           itemBuilder: (context, index) => Container(
             // padding: NOW CONTROLLED BY MESSAGE BUBBLE
             child: MessageBubble(
+              userId: chatDocs?[index]['userId'],
               message: chatDocs?[index]['text'],
               isCurrentUser: chatDocs?[index]['userId'] ==
                   FirebaseAuth.instance.currentUser!.uid,
