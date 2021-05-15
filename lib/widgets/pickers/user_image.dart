@@ -6,14 +6,14 @@ import 'package:image_picker/image_picker.dart';
 class UserImagePicker extends StatefulWidget {
   const UserImagePicker(this.imagePickFn);
 
-  final void Function(File pickedImage) imagePickFn;
+  final void Function(String pickedImagePath) imagePickFn;
 
   @override
   _UserImagePickerState createState() => _UserImagePickerState();
 }
 
 class _UserImagePickerState extends State<UserImagePicker> {
-  File? _pickedImage;
+  PickedFile? _pickedImage;
 
   Future<void> _pickImage() async {
     final _picker = ImagePicker();
@@ -21,8 +21,8 @@ class _UserImagePickerState extends State<UserImagePicker> {
 
     setState(() {
       if (pickedFile != null) {
-        _pickedImage = File(pickedFile.path);
-        widget.imagePickFn(_pickedImage!);
+        _pickedImage = pickedFile;
+        widget.imagePickFn(_pickedImage!.path);
       } else {
         print('No image selected.');
       }
@@ -36,7 +36,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
         CircleAvatar(
           backgroundColor: Colors.grey,
           backgroundImage:
-              _pickedImage != null ? FileImage(_pickedImage!) : null,
+              _pickedImage != null ? NetworkImage(_pickedImage!.path) : null,
           radius: 40,
         ),
         TextButton(

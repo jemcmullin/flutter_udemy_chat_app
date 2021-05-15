@@ -41,10 +41,10 @@ class _AuthFormState extends State<AuthForm> {
   var _userEmail = '';
   var _userName = '';
   var _userPassword = '';
-  File? userImageFile;
+  String? userImageFilePath;
 
-  void pickImage(File image) {
-    userImageFile = image;
+  void pickImage(String imagePath) {
+    userImageFilePath = imagePath;
   }
 
   Future<void> _trySubmit() async {
@@ -54,7 +54,7 @@ class _AuthFormState extends State<AuthForm> {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
 
-    if (!_isLogin && userImageFile == null) {
+    if (!_isLogin && userImageFilePath == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
