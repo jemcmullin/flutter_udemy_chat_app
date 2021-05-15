@@ -103,6 +103,15 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  //Image selection
+                  if (!_isLogin)
+                    CircleAvatar(
+                      radius: 40,
+                    ),
+                    TextButton(
+                      child: Text('Select Image'),
+                      onPressed: () {},
+                    ),
                   //Email address entry
                   TextFormField(
                     key: ValueKey('email'), //neccessary for toggle signup
