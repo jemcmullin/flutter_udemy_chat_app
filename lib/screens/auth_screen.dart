@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../widgets/pickers/user_image.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -104,14 +105,7 @@ class _AuthFormState extends State<AuthForm> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   //Image selection
-                  if (!_isLogin)
-                    CircleAvatar(
-                      radius: 40,
-                    ),
-                    TextButton(
-                      child: Text('Select Image'),
-                      onPressed: () {},
-                    ),
+                  if (!_isLogin) UserImagePicker(),
                   //Email address entry
                   TextFormField(
                     key: ValueKey('email'), //neccessary for toggle signup
