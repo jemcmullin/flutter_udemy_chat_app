@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -39,6 +41,11 @@ class _AuthFormState extends State<AuthForm> {
   var _userEmail = '';
   var _userName = '';
   var _userPassword = '';
+  File? userImageFile;
+
+  void pickImage(File image) {
+    userImageFile = image;
+  }
 
   Future<void> _trySubmit() async {
     setState(() {
@@ -46,6 +53,23 @@ class _AuthFormState extends State<AuthForm> {
     });
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
+
+    if (!_isLogin && userImageFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Please Select An Image',
+            textAlign: TextAlign.center,
+          ),
+          backgroundColor: Theme.of(context).errorColor,
+        ),
+      );
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
     if (isValid) {
       _formKey.currentState!.save();
       UserCredential userCredential;
@@ -105,7 +129,7 @@ class _AuthFormState extends State<AuthForm> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   //Image selection
-                  if (!_isLogin) UserImagePicker(),
+                  if (!_isLogin) UserImagePicker(pickImage),
                   //Email address entry
                   TextFormField(
                     key: ValueKey('email'), //neccessary for toggle signup
