@@ -95,12 +95,15 @@ class _AuthFormState extends State<AuthForm> {
               .putFile((File(userImageFilePath!)))
               .whenComplete(() {});
 
+          final _imageUrl = await storageRef.getDownloadURL();
+
           await FirebaseFirestore.instance
               .collection('users')
               .doc(userCredential.user!.uid)
               .set({
             'username': _userName.trim(),
             'email': _userEmail.trim(),
+            'image_url': _imageUrl,
           });
         }
       } on PlatformException catch (err) {
