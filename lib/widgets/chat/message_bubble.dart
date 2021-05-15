@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 
 class MessageBubble extends StatelessWidget {
   final String userId;
+  final String username;
   final String message;
   final bool isCurrentUser;
 
   const MessageBubble({
     Key? key,
     required this.userId,
+    required this.username,
     required this.message,
     required this.isCurrentUser,
   }) : super(key: key);
@@ -35,30 +37,32 @@ class MessageBubble extends StatelessWidget {
             isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
-            child: FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(userId)
-                    .get(),
-                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return Text("Something went wrong");
-                  }
+              padding:
+                  const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+              child: Text(username)
+              // FutureBuilder<DocumentSnapshot>(
+              // future: FirebaseFirestore.instance
+              //     .collection('users')
+              //     .doc(userId)
+              //     .get(),
+              // builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              //   if (snapshot.hasError) {
+              //     return Text("Something went wrong");
+              //   }
 
-                  if (snapshot.hasData && !snapshot.data!.exists) {
-                    return Text("User does not exist");
-                  }
+              //   if (snapshot.hasData && !snapshot.data!.exists) {
+              //     return Text("User does not exist");
+              //   }
 
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    final userData =
-                        snapshot.data!.data() as Map<String, dynamic>;
-                    return Text(userData['username']);
-                  }
+              //   if (snapshot.connectionState == ConnectionState.done) {
+              //     final userData =
+              //         snapshot.data!.data() as Map<String, dynamic>;
+              //     return Text(userData['username']);
+              //   }
 
-                  return Text("loading...");
-                }),
-          ),
+              //   return Text("loading...");
+              // }),
+              ),
           Row(
             mainAxisAlignment:
                 isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
